@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const logEntry = document.getElementById("logEntry");
   const logText = document.getElementById("logText");
   const audio = document.getElementById("logAudio");
+  const textarea = document.querySelector("textarea");
 
   const logMessage = "log_entry_032 berjaya. emosi sedang diproses...";
 
@@ -40,7 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
         loading.classList.add("hidden");
         logEntry.classList.remove("hidden");
-        audio.play();
+        audio.pause();
+        audio.currentTime = 0;
+        audio.load(); // Force reload for mobile
+        audio.play().catch(() => {
+          console.log("Audio play failed on mobile.");
+        });
         glitchTypeWriter(logMessage, logText, 100);
 
         setTimeout(() => {
@@ -48,6 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
           landing.classList.remove("hidden");
           landing.style.transform = "scale(1)";
           landing.style.opacity = 1;
+          textarea.value = ""; // Clear the text box
+          logText.textContent = ""; // Reset log text
         }, 34000);
       }, 3000);
     }, 2000);

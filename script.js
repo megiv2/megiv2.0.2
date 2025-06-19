@@ -29,6 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
   releaseBtn.addEventListener("click", () => {
     playClickSound();
 
+    // SAFARI/IOS: force audio interaction early
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+      console.log("Audio still blocked.");
+    });
+
     // Zoom and fade out landing
     landing.style.transition = "transform 2s ease, opacity 2s ease";
     landing.style.transform = "scale(1.2)";
@@ -41,12 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
         loading.classList.add("hidden");
         logEntry.classList.remove("hidden");
-        audio.pause();
-        audio.currentTime = 0;
-        audio.load(); // Force reload for mobile
-        audio.play().catch(() => {
-          console.log("Audio play failed on mobile.");
-        });
+
         glitchTypeWriter(logMessage, logText, 100);
 
         setTimeout(() => {
@@ -54,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
           landing.classList.remove("hidden");
           landing.style.transform = "scale(1)";
           landing.style.opacity = 1;
-          textarea.value = ""; // Clear the text box
-          logText.textContent = ""; // Reset log text
+          textarea.value = "";
+          logText.textContent = "";
         }, 34000);
       }, 3000);
     }, 2000);

@@ -163,7 +163,7 @@
           document.getElementById("logEntry").style.display = "flex";
           logText.innerText = "";
 
-          typeWriter(message, logText, 0, 20); // ~20ms per character = ~15s
+          typeWriter(message, logText, 0, 250); // 250ms per char = ~15s total
 
           audio.currentTime = 0;
           audio.play();

@@ -34,7 +34,7 @@
         overflow: hidden;
         white-space: nowrap;
         border-right: 0.15em solid white;
-        animation: typing 3s steps(40, end) forwards;
+        animation: typing 25s steps(60, end) forwards;
         font-family: 'Source Code Pro', monospace;
       }
 
@@ -49,6 +49,32 @@
 
       .font-source {
         font-family: 'Source Code Pro', monospace;
+      }
+
+      .loading-dots::after {
+        content: '';
+        display: inline-block;
+        animation: dots 1s steps(4, end) infinite;
+        width: 1ch;
+        text-align: left;
+      }
+
+      @keyframes dots {
+        0% {
+          content: '';
+        }
+        25% {
+          content: '.';
+        }
+        50% {
+          content: '..';
+        }
+        75% {
+          content: '...';
+        }
+        100% {
+          content: '';
+        }
       }
     </style>
     <link
@@ -102,7 +128,7 @@
       class="w-screen h-screen bg-black hidden flex justify-center items-center"
     >
       <div class="text-center">
-        <p class="text-lg font-mono">loading...</p>
+        <p class="text-lg font-mono loading-dots">loading</p>
       </div>
     </section>
 

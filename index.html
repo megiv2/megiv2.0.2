@@ -42,17 +42,24 @@
         }
       }
     </style>
-  
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
       .font-source {
         font-family: 'Source Code Pro', monospace;
       }
     </style>
   </head>
+
   <body class="bg-black text-white overflow-hidden">
     <!-- LANDING PAGE -->
-    <section id="landing" class="w-screen h-screen relative flex flex-col justify-center items-center">
+    <section
+      id="landing"
+      class="w-screen h-screen relative flex flex-col justify-center items-center"
+    >
       <video
         id="bg-video"
         src="/bg.mp4"
@@ -62,8 +69,15 @@
         playsinline
       ></video>
       <div class="z-10 text-center px-4">
-        <h1 class="text-2xl md:text-4xl glitch mb-4 font-source italic">megilism v2.0 | akses rahsia</h1>
-        <p class="mb-4 font-source italic">tulis apa saja memori, trauma atau apa yang kau mahu.<br />takkan disimpan, terus lenyap dari sini.</p>
+        <h1
+          class="text-2xl md:text-4xl glitch mb-4 font-source italic"
+        >
+          megilism v2.0 | akses rahsia
+        </h1>
+        <p class="mb-4 font-source italic">
+          tulis apa saja memori, trauma atau apa yang kau mahu.<br />takkan disimpan,
+          terus lenyap dari sini.
+        </p>
         <textarea
           class="bg-black bg-opacity-50 border border-gray-600 p-2 rounded-md w-full max-w-md h-24 mb-4"
           placeholder="..."
@@ -79,7 +93,10 @@
     </section>
 
     <!-- LOADING SECTION -->
-    <section id="loading" class="w-screen h-screen bg-black hidden flex justify-center items-center">
+    <section
+      id="loading"
+      class="w-screen h-screen bg-black hidden flex justify-center items-center"
+    >
       <div class="text-center">
         <p class="typewriter text-lg">
           loading<span>.</span><span>.</span><span>.</span>
@@ -88,33 +105,35 @@
     </section>
 
     <!-- LOG ENTRY SECTION -->
-    <section id="logEntry" class="w-screen h-screen bg-black hidden flex flex-col justify-center items-center space-y-4">
-      <p id="logNumber" class="text-center text-lg font-mono italic">log_entry_032</p>
-      <p id="logText" class="text-center text-lg font-mono italic"></p>
+    <section
+      id="logEntry"
+      class="w-screen h-screen bg-black hidden flex justify-center items-center"
+    >
+      <p
+        id="logText"
+        class="text-center text-lg font-mono italic typewriter"
+      ></p>
       <audio id="logAudio" src="/KoyakWebsite.mp3"></audio>
     </section>
 
     <!-- SCRIPT -->
     <script>
-      // Init value kalau belum wujud
       if (!localStorage.getItem('log_counter')) {
         localStorage.setItem('log_counter', 32);
-      }
-
-      function updateDisplay() {
-        let count = parseInt(localStorage.getItem('log_counter'));
-        document.getElementById("logNumber").innerText = "log_entry_" + String(count).padStart(3, '0');
       }
 
       function increaseLog() {
         let count = parseInt(localStorage.getItem('log_counter'));
         count += 1;
         localStorage.setItem('log_counter', count);
-        updateDisplay();
-      }
 
-      // On load
-      updateDisplay();
+        const message =
+          "log entry " +
+          String(count).padStart(3, "0") +
+          " berjaya dihantar. emosi sedang diproses....";
+
+        document.getElementById("logText").innerText = message;
+      }
     </script>
   </body>
 </html>

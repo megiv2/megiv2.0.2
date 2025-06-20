@@ -147,10 +147,12 @@
         count += 1;
         localStorage.setItem("log_counter", count);
 
-        const message =
-          "log\u00A0entry\u00A0" + // <-- non-breaking spaces here!
+        const rawText =
+          "log entry " +
           String(count).padStart(3, "0") +
           " berjaya dihantar. emosi sedang diproses....";
+
+        const message = rawText.replace(/ /g, "\u00A0"); // Force all spacing!
 
         const logText = document.getElementById("logText");
         const audio = document.getElementById("logAudio");
@@ -163,7 +165,7 @@
           document.getElementById("logEntry").style.display = "flex";
           logText.innerText = "";
 
-          typeWriter(message, logText, 0, 250); // 15s animation
+          typeWriter(message, logText, 0, 250); // 250ms per char ~15s
 
           audio.currentTime = 0;
           audio.play();

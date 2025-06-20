@@ -34,7 +34,7 @@
         overflow: hidden;
         white-space: nowrap;
         border-right: 0.15em solid white;
-        animation: typing 25s steps(60, end) forwards;
+        animation: typing 15s steps(60, end) forwards;
         font-family: 'Source Code Pro', monospace;
       }
 
@@ -75,6 +75,11 @@
         100% {
           content: '';
         }
+      }
+
+      /* Mobile fix: full height for log entry */
+      #logEntry {
+        min-height: 100vh;
       }
     </style>
     <link
@@ -135,7 +140,7 @@
     <!-- LOG ENTRY SECTION -->
     <section
       id="logEntry"
-      class="w-screen h-screen bg-black hidden flex justify-center items-center"
+      class="w-screen hidden flex justify-center items-center px-4"
     >
       <p
         id="logText"
@@ -156,26 +161,37 @@
         count += 1;
         localStorage.setItem('log_counter', count);
 
-        // Prepare message
         const message =
           "log entry " +
           String(count).padStart(3, "0") +
           " berjaya dihantar. emosi sedang diproses....";
 
+        // Reset previous animation
+        const logText = document.getElementById("logText");
+        logText.classList.remove("typewriter");
+        void logText.offsetWidth; // trigger reflow
+        logText.innerText = ""; // clear
+
         // Switch to loading
         document.getElementById("landing").style.display = "none";
         document.getElementById("loading").style.display = "flex";
 
-        // Delay → switch to logEntry
+        // Delay → go to logEntry
         setTimeout(() => {
           document.getElementById("loading").style.display = "none";
           document.getElementById("logEntry").style.display = "flex";
-
-          const logText = document.getElementById("logText");
-          logText.classList.add("typewriter");
           logText.innerText = message;
+          logText.classList.add("typewriter");
 
-          document.getElementById("logAudio").play();
+          const audio = document.getElementById("logAudio");
+          audio.play();
+
+          // When audio ends → go back to landing & reset textarea
+          audio.onended = () => {
+            document.getElementById("logEntry").style.display = "none";
+            document.getElementById("landing").style.display = "flex";
+            document.getElementById("inputText").value = "";
+          };
         }, 2500);
       }
     </script>

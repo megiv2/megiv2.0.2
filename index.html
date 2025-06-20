@@ -73,13 +73,30 @@
         font-style: italic;
       }
 
-      #logEntry {
+      #logEntry,
+      #statusSection {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0 1rem;
         box-sizing: border-box;
+      }
+
+      .blinking {
+        animation: blinkText 1s steps(2, start) infinite;
+      }
+
+      @keyframes blinkText {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -133,9 +150,19 @@
     </section>
 
     <!-- LOG ENTRY SECTION -->
-    <section id="logEntry" class="w-screen hidden">
+    <section id="logEntry" class="w-screen hidden bg-black">
       <p id="logText" class="text-lg px-4"></p>
       <audio id="logAudio" src="/KoyakWebsite.mp3"></audio>
+    </section>
+
+    <!-- STATUS SECTION -->
+    <section
+      id="statusSection"
+      class="w-screen h-screen hidden bg-[#0c1b33] flex justify-center items-center"
+    >
+      <p class="text-lg font-source italic blinking">
+        status: berjaya dilenyapkan.
+      </p>
     </section>
 
     <script>
@@ -153,7 +180,7 @@
           String(count).padStart(3, "0") +
           " berjaya dihantar. emosi sedang diproses....";
 
-        const message = rawText.replace(/ /g, "\u00A0"); // Force all spacing!
+        const message = rawText.replace(/ /g, "\u00A0");
 
         const logText = document.getElementById("logText");
         const audio = document.getElementById("logAudio");
@@ -166,15 +193,19 @@
           document.getElementById("logEntry").style.display = "flex";
           logText.innerText = "";
 
-          typeWriter(message, logText, 0, 250); // 250ms per char ~15s
-
+          typeWriter(message, logText, 0, 250);
           audio.currentTime = 0;
           audio.play();
 
           audio.onended = () => {
             document.getElementById("logEntry").style.display = "none";
-            document.getElementById("landing").style.display = "flex";
-            document.getElementById("inputText").value = "";
+            document.getElementById("statusSection").style.display = "flex";
+
+            setTimeout(() => {
+              document.getElementById("statusSection").style.display = "none";
+              document.getElementById("landing").style.display = "flex";
+              document.getElementById("inputText").value = "";
+            }, 5000); // 5 seconds
           };
         }, 2500);
       }

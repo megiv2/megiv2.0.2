@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>megilism v2.0 | akses rahsia</title>
-    <script defer src="script.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -31,27 +30,31 @@
         }
       }
 
-      .typewriter span {
-        display: inline-block;
-        animation: blink 1s infinite steps(1, start);
+      .typewriter {
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 0.15em solid white;
+        animation: typing 3s steps(40, end) forwards;
+        font-family: 'Source Code Pro', monospace;
       }
 
-      @keyframes blink {
-        50% {
-          opacity: 0;
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
         }
       }
-    </style>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,400&display=swap"
-      rel="stylesheet"
-    />
-    <style>
       .font-source {
         font-family: 'Source Code Pro', monospace;
       }
     </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body class="bg-black text-white overflow-hidden">
@@ -75,8 +78,8 @@
           megilism v2.0 | akses rahsia
         </h1>
         <p class="mb-4 font-source italic">
-          tulis apa saja memori, trauma atau apa yang kau mahu.<br />takkan disimpan,
-          terus lenyap dari sini.
+          tulis apa saja memori, trauma atau apa yang kau mahu.<br />takkan
+          disimpan, terus lenyap dari sini.
         </p>
         <textarea
           id="inputText"
@@ -86,7 +89,7 @@
         <button
           id="releaseBtn"
           class="bg-white text-black font-bold py-2 px-4 rounded hover:bg-gray-200"
-          onclick="increaseLog()"
+          onclick="handleRelease()"
         >
           release
         </button>
@@ -99,9 +102,7 @@
       class="w-screen h-screen bg-black hidden flex justify-center items-center"
     >
       <div class="text-center">
-        <p class="typewriter text-lg">
-          loading<span>.</span><span>.</span><span>.</span>
-        </p>
+        <p class="text-lg font-mono">loading...</p>
       </div>
     </section>
 
@@ -112,10 +113,8 @@
     >
       <p
         id="logText"
-        class="text-center text-lg font-mono italic typewriter"
-      >
-        <span id="logTextContent"></span><span>.</span><span>.</span><span>.</span>
-      </p>
+        class="text-center text-lg font-mono italic"
+      ></p>
       <audio id="logAudio" src="/KoyakWebsite.mp3"></audio>
     </section>
 
@@ -125,24 +124,33 @@
         localStorage.setItem('log_counter', 32);
       }
 
-      function increaseLog() {
+      function handleRelease() {
+        // Update count first
         let count = parseInt(localStorage.getItem('log_counter'));
         count += 1;
         localStorage.setItem('log_counter', count);
 
+        // Prepare message
         const message =
           "log entry " +
           String(count).padStart(3, "0") +
-          " berjaya dihantar. emosi sedang diproses";
+          " berjaya dihantar. emosi sedang diproses....";
 
-        document.getElementById("logTextContent").innerText = message;
-
-        // Optional: hide landing, show log
+        // Switch to loading
         document.getElementById("landing").style.display = "none";
-        document.getElementById("logEntry").style.display = "flex";
+        document.getElementById("loading").style.display = "flex";
 
-        // Optional: play audio
-        document.getElementById("logAudio").play();
+        // Delay → switch to logEntry
+        setTimeout(() => {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("logEntry").style.display = "flex";
+
+          const logText = document.getElementById("logText");
+          logText.classList.add("typewriter");
+          logText.innerText = message;
+
+          document.getElementById("logAudio").play();
+        }, 2500);
       }
     </script>
   </body>

@@ -64,30 +64,13 @@
         }
       }
 
-      .typewriter {
-        overflow: hidden;
-        display: inline-block;
-        position: relative;
-        animation: reveal 15s linear forwards;
-        font-family: 'Source Code Pro', monospace;
-        white-space: normal;
-      }
-
-      @keyframes reveal {
-        from {
-          width: 0%;
-        }
-        to {
-          width: 100%;
-        }
-      }
-
       #logText {
         max-width: 90vw;
         text-align: center;
         font-family: 'Source Code Pro', monospace;
         white-space: normal;
         word-wrap: break-word;
+        font-style: italic;
       }
 
       #logEntry {
@@ -149,23 +132,20 @@
     </section>
 
     <!-- LOG ENTRY SECTION -->
-    <section
-      id="logEntry"
-      class="w-screen hidden"
-    >
-      <p id="logText" class="text-lg font-mono italic px-4"></p>
+    <section id="logEntry" class="w-screen hidden">
+      <p id="logText" class="text-lg px-4"></p>
       <audio id="logAudio" src="/KoyakWebsite.mp3"></audio>
     </section>
 
     <script>
-      if (!localStorage.getItem('log_counter')) {
-        localStorage.setItem('log_counter', 32);
+      if (!localStorage.getItem("log_counter")) {
+        localStorage.setItem("log_counter", 32);
       }
 
       function handleRelease() {
-        let count = parseInt(localStorage.getItem('log_counter'));
+        let count = parseInt(localStorage.getItem("log_counter"));
         count += 1;
-        localStorage.setItem('log_counter', count);
+        localStorage.setItem("log_counter", count);
 
         const message =
           "log entry " +
@@ -173,9 +153,7 @@
           " berjaya dihantar. emosi sedang diproses....";
 
         const logText = document.getElementById("logText");
-        logText.classList.remove("typewriter");
-        void logText.offsetWidth;
-        logText.innerText = "";
+        const audio = document.getElementById("logAudio");
 
         document.getElementById("landing").style.display = "none";
         document.getElementById("loading").style.display = "flex";
@@ -183,11 +161,10 @@
         setTimeout(() => {
           document.getElementById("loading").style.display = "none";
           document.getElementById("logEntry").style.display = "flex";
+          logText.innerText = "";
 
-          logText.innerText = message;
-          logText.classList.add("typewriter");
+          typeWriter(message, logText, 0, 20); // ~20ms per character = ~15s
 
-          const audio = document.getElementById("logAudio");
           audio.currentTime = 0;
           audio.play();
 
@@ -197,6 +174,15 @@
             document.getElementById("inputText").value = "";
           };
         }, 2500);
+      }
+
+      function typeWriter(text, element, i, speed) {
+        if (i < text.length) {
+          element.innerText += text.charAt(i);
+          setTimeout(() => {
+            typeWriter(text, element, i + 1, speed);
+          }, speed);
+        }
       }
     </script>
   </body>

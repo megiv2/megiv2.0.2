@@ -148,7 +148,7 @@
         localStorage.setItem("log_counter", count);
 
         const message =
-          "log entry " +
+          "log\u00A0entry\u00A0" + // <-- non-breaking spaces here!
           String(count).padStart(3, "0") +
           " berjaya dihantar. emosi sedang diproses....";
 
@@ -163,7 +163,7 @@
           document.getElementById("logEntry").style.display = "flex";
           logText.innerText = "";
 
-          typeWriter(message, logText, 0, 250); // 250ms per char = ~15s total
+          typeWriter(message, logText, 0, 250); // 15s animation
 
           audio.currentTime = 0;
           audio.play();
